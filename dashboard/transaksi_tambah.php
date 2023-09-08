@@ -44,15 +44,16 @@ $countStatusNot3 = $row[0];
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="id_santri">Pilih Santri</label>
-                                        <select class="form-control shadow" id="id_santri" name="id_santri">
+                                        <select class="form-control selectpicker" id="id_santri" name="id_santri" data-live-search="true">
                                             <?php while ($transaction = mysqli_fetch_assoc($queryResult)) : ?>
-                                                <option value="<?php echo $transaction['id_santri']; ?>"><?php echo $transaction['nama']; ?></option>
+                                                <option value="<?php echo $transaction['id_santri']; ?>">
+                                                    <?php echo $transaction['nama']; ?> - <?php echo $transaction['nisn']; ?>
+                                                </option>
                                             <?php endwhile; ?>
-
                                         </select>
                                     </div>
-
                                 </div>
+
 
 
 
