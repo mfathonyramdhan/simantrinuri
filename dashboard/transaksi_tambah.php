@@ -105,9 +105,7 @@ $countStatusNot3 = $row[0];
                                     </div>
                                 </div>
                             </div>
-                            <div id="pdf-viewer">
-                                <!-- PDF.js viewer container -->
-                            </div>
+
 
 
 
