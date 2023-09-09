@@ -18,17 +18,36 @@ $result = mysqli_query($connection, $query);
             <div class="card-body">
                 <form method="POST" action="siswa_tambah_process.php">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col">
                             <div class="mb-3">
                                 <label for="name" class="form-label">Nama</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan Nama Santri" required>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
 
 
 
                         </div>
-                        <div class="col-md-6">
+
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="nisn" class="form-label">NISN</label>
+                                <input type="number" class="form-control" id="nisn" name="nisn" placeholder="Masukkan NISN" maxlength="10" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col">
 
 
                             <div class="mb-3">
@@ -52,7 +71,7 @@ $result = mysqli_query($connection, $query);
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Tambah Student</button>
+                    <button type="submit" class="btn btn-primary">Tambah Santri</button>
                 </form>
             </div>
         </div>

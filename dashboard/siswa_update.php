@@ -1,5 +1,5 @@
 ﻿<?php
-$pageTitle = "Edit Siswa";
+$pageTitle = "Edit Santri";
 include 'template/header.php';
 include 'template/sidebar.php';
 include '../connection.php';
@@ -36,16 +36,32 @@ if (isset($_GET['id'])) {
                                 <form method="post" action="siswa_update_process.php">
                                     <input type="hidden" name="student_id" value="<?php echo $student['id_santri']; ?>">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col">
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Nama</label>
                                                 <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan Nama Santri" value="<?php echo $student['nama']; ?>" required>
                                             </div>
 
-
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" name="email" value="<?php echo $student['email']; ?>">
+                                            </div>
 
                                         </div>
-                                        <div class="col-md-6">
+
+                                        <div class="col">
+                                            <div class="mb-3">
+                                                <label for="nisn" class="form-label">NISN</label>
+                                                <input type="text" class="form-control" id="nisn" name="nisn" placeholder="Masukkan NISN Santri" value="<?php echo $student['nisn']; ?>" maxlength="10" required>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Password</label>
+                                                <input type="password" class="form-control" name="password">
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
 
 
                                             <div class="mb-3">

@@ -47,6 +47,8 @@ if (isset($_POST['delete_student'])) {
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
+                                        <th>NISN</th>
+
 
                                         <th>Kelas</th>
                                         <th>Nama Wali</th>
@@ -73,6 +75,8 @@ if (isset($_POST['delete_student'])) {
                                             <tr>
                                                 <td><?php echo $counter++; ?></td>
                                                 <td><?php echo $row['nama']; ?></td>
+                                                <td><?php echo $row['nisn']; ?></td>
+
                                                 <td><?php
 
                                                     echo $row['nama_kelas'];
@@ -115,7 +119,7 @@ if (isset($_POST['delete_student'])) {
                                     <tr>
                                         <th>No</th>
                                         <th>Nama</th>
-
+                                        <th>NISN</th>
                                         <th>Kelas</th>
                                         <th>Nama Wali</th>
                                         <th>No HP Wali</th>
