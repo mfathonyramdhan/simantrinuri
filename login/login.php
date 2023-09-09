@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verify the password
         if (password_verify($password, $storedPassword)) {
             // Password is correct, log in the user and redirect to the dashboard or home page
-            $_SESSION['user_id'] = $row['id_santri'];
+            $_SESSION['user_id'] = $row['id_admin'];
             $_SESSION['user_email'] = $row['email'];
             $role = 1;
 
