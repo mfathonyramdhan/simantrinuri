@@ -46,6 +46,8 @@ if (isset($_POST['delete_transaksi'])) {
                                         <th>Tahun Pelajaran</th>
 
                                         <th>Semester</th>
+                                        <th>File Rincian Tagihan</th>
+
                                         <th>Aksi</th>
 
 
@@ -72,7 +74,13 @@ if (isset($_POST['delete_transaksi'])) {
 
                                                 <td><?php echo $row['semester']; ?></td>
 
-
+                                                <td>
+                                                    <a href="frtpdf/frtTapel<?php $tapel = $row['tahun_pelajaran'];
+                                                                            $tapelc = str_replace('/', '', $tapel);
+                                                                            echo $tapelc;  ?>Sems<?php echo $row['semester']; ?>.pdf" class="btn btn-primary shadow sharp me-1">
+                                                        <i class="fa fa-download"></i>
+                                                </td>
+                                                </a>
                                                 <td>
                                                     <div class="d-flex">
 
@@ -111,6 +119,8 @@ if (isset($_POST['delete_transaksi'])) {
                                         <th>Tahun Pelajaran</th>
 
                                         <th>Semester</th>
+                                        <th>File Rincian Tagihan</th>
+
                                         <th>Aksi</th>
                                     </tr>
                                 </tfoot>

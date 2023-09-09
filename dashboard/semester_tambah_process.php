@@ -1,34 +1,55 @@
-﻿<?php
-include '../connection.php';
+﻿
+<?php include '../connection.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $semester = $_POST['semester'];
-    $tapel = $_POST['tapel'];
-    $biaya_listrik = $_POST['biaya_listrik'];
-    $biaya_asrama = $_POST['biaya_asrama'];
-    $biaya_pesantren = $_POST['biaya_pesantren'];
-    $biaya_madin = $_POST['biaya_madin'];
-    $biaya_mqqurani = $_POST['biaya_mqqurani'];
-    $biaya_mqtahfidz = $_POST['biaya_mqtahfidz'];
-    $biaya_mksni = $_POST['biaya_mksni'];
-    $biaya_mqtahsin = $_POST['biaya_mqtahsin'];
-    $biaya_uks = $_POST['biaya_uks'];
-    $biaya_lemari = $_POST['biaya_lemari'];
-    $biaya_ujianmd = $_POST['biaya_ujianmd'];
-    $biaya_makan = $_POST['biaya_makan'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get form data
+    $semester = $_POST["semester"];
+    $tapel = $_POST["tapel"];
+    $tagihan = $_POST["tagihan"];
 
-    // Perform the database insertion
-    $insertQuery = "INSERT INTO transaksi_detail (semester, tahun_pelajaran, biaya_listrik, biaya_asrama, biaya_pesantren, biaya_madin, biaya_mqqurani, biaya_mqtahfidz, biaya_mksni, biaya_mqtahsin, biaya_uks, biaya_lemari, biaya_ujianmd, biaya_makan) 
-                    VALUES ('$semester', '$tapel', '$biaya_listrik', '$biaya_asrama', '$biaya_pesantren', '$biaya_madin', '$biaya_mqqurani', '$biaya_mqtahfidz', '$biaya_mksni', '$biaya_mqtahsin', '$biaya_uks', '$biaya_lemari', '$biaya_ujianmd', '$biaya_makan')";
+    // Replace slashes in $tapel with empty strings to get "20232024"
+    $tapel = str_replace('/', '', $tapel);
 
-    if (mysqli_query($connection, $insertQuery)) {
-        // Insertion successful
-        header("Location: semester.php"); // Redirect to the semester page
-        exit();
+    // Custom filename
+    $filename = "frtTapel" . $tapel . "Sems" . $semester . ".pdf";
+
+    // File upload handling
+    $pdfFile = $_FILES["pdfFile"];
+
+    // Check if a file was uploaded
+    if ($pdfFile["error"] === UPLOAD_ERR_OK) {
+        // Define the directory where you want to save the uploaded PDF
+        $uploadDir = "frtpdf/";
+
+        // Define the full path to save the uploaded PDF
+        $filePath = $uploadDir . $filename;
+
+        // Move the uploaded PDF to the specified directory
+        if (move_uploaded_file($pdfFile["tmp_name"], $filePath)) {
+            // Insert form data into the database
+            $query = "INSERT INTO transaksi_detail (semester, tahun_pelajaran, tagihan, file_rincian_tagihan) VALUES ('$semester', '$tapel', '$tagihan', '$filename')";
+
+            if (mysqli_query($connection, $query)) {
+                // Data successfully inserted
+                header("Location: semester.php");
+                exit();
+            } else {
+                // Error inserting data
+                echo "Error: " . mysqli_error($connection);
+            }
+        } else {
+            // Error moving uploaded file
+            echo "Error uploading PDF.";
+        }
     } else {
-        // Insertion failed
-        echo "Error: " . mysqli_error($connection);
+        // Error uploading file
+        echo "Error: " . $pdfFile["error"];
     }
 
+    // Close the database connection
     mysqli_close($connection);
+} else {
+    // Redirect to the form page if accessed without POST request
+    header("Location: tambah_semester.php");
+    exit();
 }

@@ -71,25 +71,6 @@ $countStatusNot3 = $row[0];
 
                                 </div>
 
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label for="bulan">Bulan</label>
-                                        <select class="form-control shadow" id="bulan" name="bulan">
-                                            <option value="b1">Januari</option>
-                                            <option value="b2">Februari</option>
-                                            <option value="b3">Maret</option>
-                                            <option value="b4">April</option>
-                                            <option value="b5">Mei</option>
-                                            <option value="b6">Juni</option>
-                                            <option value="b7">Juli</option>
-                                            <option value="b8">Agustus</option>
-                                            <option value="b9">September</option>
-                                            <option value="b10">Oktober</option>
-                                            <option value="b11">November</option>
-                                            <option value="b12">Desember</option>
-                                        </select>
-                                    </div>
-                                </div>
 
                                 <div class="col">
                                     <div class="form-group">
@@ -112,29 +93,56 @@ $countStatusNot3 = $row[0];
 
 
                             </div>
-
                             <div class="row">
                                 <div class="col">
                                     <div class="alert alert-danger" role="alert">
-                                        Tagihan yang harus dibayar 1 Semester :<strong>Rp. 270.000 * 6</strong>
+                                        Tagihan yang harus dibayar 1 Semester: <strong><span id="tagihan-1-semester"></span></strong>
                                     </div>
+                                </div>
+                                <div class="col">
+                                    <div class="alert alert-danger" role="alert">
+                                        Tagihan yang harus dibayar tiap bulan: <strong><span id="tagihan-tiap-bulan"></span></strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pdf-viewer">
+                                <!-- PDF.js viewer container -->
+                            </div>
 
 
+
+
+                            <div class="row">
+                                <div class="col">
+                                    <label for="nominal" class="form-label">Bulan ke : 1</label>
+                                    <input type="number" min="100000" class="form-control" name="b1" placeholder="Masukkan nominal, minimal Rp. 100.000">
                                 </div>
 
                                 <div class="col">
-                                    <div class="alert alert-danger" role="alert">
-                                        Tagihan yang harus dibayar tiap bulan :<strong>Rp. 270.000</strong>
-                                    </div>
+                                    <label for="nominal" class="form-label">Bulan ke : 2</label>
+                                    <input type="number" min="100000" class="form-control" name="b2" placeholder="Masukkan nominal, minimal Rp. 100.000">
                                 </div>
 
-
+                                <div class="col">
+                                    <label for="nominal" class="form-label">Bulan ke : 3</label>
+                                    <input type="number" min="100000" class="form-control" name="b3" placeholder="Masukkan nominal, minimal Rp. 100.000">
+                                </div>
                             </div>
 
                             <div class="row">
                                 <div class="col">
-                                    <label for="nominal" class="form-label">Nominal Cicilan</label>
-                                    <input type="number" min="100000" class="form-control" name="nominal" placeholder="Masukkan nominal, minimal Rp. 100.000">
+                                    <label for="nominal" class="form-label">Bulan ke : 4</label>
+                                    <input type="number" min="100000" class="form-control" name="b4" placeholder="Masukkan nominal, minimal Rp. 100.000">
+                                </div>
+
+                                <div class="col">
+                                    <label for="nominal" class="form-label">Bulan ke : 5</label>
+                                    <input type="number" min="100000" class="form-control" name="b5" placeholder="Masukkan nominal, minimal Rp. 100.000">
+                                </div>
+
+                                <div class="col">
+                                    <label for="nominal" class="form-label">Bulan ke : 6</label>
+                                    <input type="number" min="100000" class="form-control" name="b6" placeholder="Masukkan nominal, minimal Rp. 100.000">
                                 </div>
                             </div>
 
@@ -155,6 +163,80 @@ $countStatusNot3 = $row[0];
             </div>
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <script>
+        // PDF.js configuration
+        const pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.worker.min.js';
+
+        // Initialize the PDF viewer
+        pdfjsLib.getDocument('frtpdf/FileRincianTagihanContoh.pdf').promise.then(function(pdf) {
+            // Get the first page of the PDF
+            return pdf.getPage(1);
+        }).then(function(page) {
+            // Create a canvas element to render the PDF page
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            const viewport = page.getViewport({
+                scale: 1.5
+            });
+
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            // Append the canvas to the viewer container
+            document.getElementById('pdf-viewer').appendChild(canvas);
+
+            // Render the PDF page on the canvas
+            page.render({
+                canvasContext: context,
+                viewport: viewport
+            });
+        });
+    </script>
+
+    <!-- Add this script before the closing </body> tag -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Function to update the calculation based on user selections
+            function updateCalculation() {
+                // Get selected values
+                var selectedSemester = $("#id_transaksi_detail").val();
+                var selectedDiskon = $("#id_diskon").val();
+
+                // Perform AJAX request to get the calculated values
+                $.ajax({
+                    type: "POST",
+                    url: "calculate_tagihan.php", // Replace with the URL of your calculation script
+                    data: {
+                        semester: selectedSemester,
+                        diskon: selectedDiskon
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        // Update the placeholders with calculated values
+                        $("#tagihan-1-semester").text("Rp. " + response.tagihan1Semester);
+                        $("#tagihan-tiap-bulan").text("Rp. " + response.tagihanTiapBulan);
+                    },
+                    error: function() {
+                        console.log("Error in AJAX request.");
+                    }
+                });
+            }
+
+            // Call the function on initial page load
+            updateCalculation();
+
+            // Call the function whenever the user makes selections
+            $("#id_transaksi_detail, #id_diskon").change(function() {
+                updateCalculation();
+            });
+        });
+    </script>
+
 </div>
 
 

@@ -13,7 +13,7 @@ include '../connection.php';
                 <h2><?php echo $pageTitle; ?></h2>
             </div>
             <div class="card-body">
-                <form method="POST" action="semester_tambah_process.php">
+                <form method="POST" action="semester_tambah_process.php" enctype="multipart/form-data">
                     <div class="row">
 
 
@@ -40,6 +40,14 @@ include '../connection.php';
                             </div>
                         </div>
 
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="pdfFile" class="form-label">Upload File Rincian Tagihan PDF</label>
+                                <input type="file" class="form-control" id="pdfFile" name="pdfFile" accept=".pdf">
+                            </div>
+                        </div>
+
+
 
 
 
@@ -49,11 +57,14 @@ include '../connection.php';
 
 
 
+
+
                     <button type="submit" class="btn btn-primary">Tambah Semester</button>
                 </form>
             </div>
         </div>
     </div>
+
 </div>
 
 <?php
