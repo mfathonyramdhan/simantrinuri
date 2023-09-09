@@ -17,7 +17,16 @@ if (isset($_SESSION['user_id'])) {
     if (mysqli_num_rows($result) === 1) {
         $row = mysqli_fetch_assoc($result);
         $userName = $row['nama'];
-        $role = $row['role'];
+        $role = 1;
+    }
+
+    $queryk = "SELECT * FROM santri WHERE id_santri = '$userId'";
+    $resultk = mysqli_query($connection, $queryk);
+
+    if (mysqli_num_rows($resultk) === 1) {
+        $rowk = mysqli_fetch_assoc($resultk);
+        $userName = $rowk['nama'];
+        $role = 2;
     }
 }
 ?>

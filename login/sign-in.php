@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     // Perform database query to validate credentials
-    $query = "SELECT * FROM admin WHERE email = '$email'";
+    $query = "SELECT * FROM santri WHERE email = '$email'";
     $result = mysqli_query($connection, $query);
 
     // Check if a matching row is found
@@ -26,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Password is correct, log in the user and redirect to the dashboard or home page
             $_SESSION['user_id'] = $row['id_santri'];
             $_SESSION['user_email'] = $row['email'];
-            $role = 1;
+
+            $role = 2;
 
             header('Location: ../dashboard/index.php');
             exit();
@@ -119,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="col-sm-12">
                     <!-- Authentication card start -->
 
-                    <form class="md-float-material form-material" action="login.php" method="POST">
+                    <form class="md-float-material form-material" action="sign-in.php" method="POST">
                         <div class="text-center">
                             <img src="..\files\assets\images\logo.png" alt="logo.png" />
                         </div>
@@ -127,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="card-block">
                                 <div class="row m-b-20">
                                     <div class="col-md-12">
-                                        <h3 class="text-center">Login Admin</h3>
+                                        <h3 class="text-center">Login Wali Santri</h3>
                                     </div>
                                     <?php if (isset($error)) : ?>
                                         <p style="color: red; background-color: aliceblue;"><?php echo $error; ?></p>
@@ -174,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </p>
 
                                         <p class="text-inverse text-left">
-                                            <a href="sign-in.php"><b class="f-w-600">Login sebagai Wali Santri</b></a>
+                                            <a href="login.php"><b class="f-w-600">Login sebagai Admin</b></a>
                                         </p>
                                     </div>
                                     <div class="col-md-2">
