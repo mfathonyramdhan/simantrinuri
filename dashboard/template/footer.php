@@ -8,6 +8,12 @@
 </div>
 </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.selectpicker').selectpicker();
+    });
+</script>
 </div>
 
 <!-- Warning Section Starts -->
@@ -94,10 +100,4 @@
     gtag('js', new Date());
 
     gtag('config', 'UA-23581568-13');
-</script>
-
-<script>
-    $(document).ready(function() {
-        $('.selectpicker').selectpicker();
-    });
 </script>

@@ -161,11 +161,26 @@
                             </a>
                         </li>
 
-                        <li class="">
-                            <a href="potongan.php">
+
+
+                        <li class="pcoded-hasmenu p">
+                            <a href="javascript:void(0)">
                                 <span class="pcoded-micon"><i class="feather icon-menu"></i></span>
                                 <span class="pcoded-mtext">Potongan</span>
                             </a>
+                            <ul class="pcoded-submenu">
+                                <li class="">
+                                    <a href="potongan.php">
+                                        <span class="pcoded-mtext">Persentase Potongan</span>
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="potongan_s.php">
+                                        <span class="pcoded-mtext">Potongan SPP Santri</span>
+                                    </a>
+                                </li>
+
+                            </ul>
                         </li>
                     <?php } ?>
 

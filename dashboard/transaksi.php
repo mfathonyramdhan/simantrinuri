@@ -340,7 +340,7 @@ if (isset($_SESSION['user_id'])) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $query = "SELECT t.*, s.nama AS nama_santri, k.nama AS nama_kelas
+                                        $query = "SELECT t.*, s.nama AS nama_santri, k.nama AS nama_kelas, d.diskon_persentase AS diskon_persentase
                                     FROM transaksi t
                                     JOIN santri s ON t.nisn_santri = s.nisn
                                     JOIN kelas k ON s.id_kelas = k.id_kelas
@@ -349,7 +349,7 @@ if (isset($_SESSION['user_id'])) {
                                         $result = mysqli_query($connection, $query);
 
                                         if (!$result) {
-                                            var_dump('Query Error: ' . mysqli_error($connection));
+                                            die('Query Error: ' . mysqli_error($connection));
                                         }
                                         // Check if any rows are found
                                         if (mysqli_num_rows($result) > 0) {
@@ -388,7 +388,18 @@ if (isset($_SESSION['user_id'])) {
                                                         ?></td>
                                                     <td><span class="badge <?php echo $badgeClass; ?>"><?php echo $note; ?></span>
                                                     <td><?php echo 'Rp. ' . number_format($row['terbayar'], 0, ',', '.'); ?></td>
-                                                    <td><?php echo 'Rp. ' . number_format($row['tagihan'], 0, ',', '.'); ?></td>
+                                                    <td><?php
+                                                        if ($row['id_diskon'] == 1) {
+                                                            echo 'Rp. ' . number_format($row['tagihan'], 0, ',', '.');
+                                                        } else {
+                                                            echo 'Rp. ' . number_format(
+                                                                $row['tagihan'] - ($row['tagihan'] * ($row['diskon_persentase'] / 100)),
+                                                                0,
+                                                                ',',
+                                                                '.'
+                                                            );
+                                                        }
+                                                        ?></td>
 
                                                     </td>
                                                     <?php if ($role == 1) { ?>
@@ -399,9 +410,9 @@ if (isset($_SESSION['user_id'])) {
                                                                 <!-- UPdate tr -->
                                                                 <form method="post" action="">
 
-                                                                    <button type="submit" name="transaksi_update.php?id=" <?php echo $row['id_transaksi']; ?>" class="btn btn-success shadow">
-                                                                        <i class="fa fa-edit"></i> <span> Tambah Transaksi </span>
-                                                                    </button>
+                                                                    <a type="submit" href="transaksi_update.php?id=<?php echo $row['id_order']; ?>" class="btn btn-success shadow">
+                                                                        <i class="fa fa-edit"></i> <span> Update Cicilan </span>
+                                                                    </a>
                                                                 </form>
                                                                 <!-- 
 
@@ -414,14 +425,14 @@ if (isset($_SESSION['user_id'])) {
                                                                 </form> -->
 
                                                                 <!-- ... -->
-                                                                <form method="post" action="" style="margin-right: 10px;" class="<?php if ($row['status_transaksi'] == 3) {
-                                                                                                                                        echo 'd-none';
-                                                                                                                                    } ?>">
+                                                                <!-- <form method="post" action="" style="margin-right: 10px;" class="<?php if ($row['status_transaksi'] == 3) {
+                                                                                                                                            echo 'd-none';
+                                                                                                                                        } ?>">
                                                                     <input type="hidden" name="transaksi_id" value="<?php echo $row['id_transaksi']; ?>">
                                                                     <a href="transaksi_print.php?transaksi_id=<?php echo $row['id_transaksi']; ?>" class="btn btn-primary shadow">
                                                                         <i class="fa fa-print"></i> <span> Print</span>
                                                                     </a>
-                                                                </form>
+                                                                </form> -->
                                                                 <!-- ... -->
                                                                 <!--
                                                             <form method="post" action="" style="margin-right: 10px;" class="<?php if ($row['status_transaksi'] == 3) {
@@ -434,12 +445,12 @@ if (isset($_SESSION['user_id'])) {
                                                             </form>
 -->
 
-                                                                <form method="post" action="">
+                                                                <!-- <form method="post" action="">
                                                                     <input type="hidden" name="transaksi_id" value="<?php echo $row['id_transaksi']; ?>">
                                                                     <button type="submit" name="delete_transaksi" class="btn btn-danger shadow" onclick="return confirm('Are you sure you want to delete this transaction ?');">
                                                                         <i class="fa fa-trash"></i>
                                                                     </button>
-                                                                </form>
+                                                                </form> -->
 
 
                                                             </div>
