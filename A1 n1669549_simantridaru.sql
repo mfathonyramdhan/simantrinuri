@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Waktu pembuatan: 08 Sep 2023 pada 15.17
--- Versi server: 10.6.14-MariaDB-cll-lve
--- Versi PHP: 8.1.16
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 10 Sep 2023 pada 08.33
+-- Versi server: 10.4.11-MariaDB
+-- Versi PHP: 7.4.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,7 +33,7 @@ CREATE TABLE `admin` (
   `role` int(1) DEFAULT 2,
   `email` varchar(255) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `admin`
@@ -53,7 +53,7 @@ CREATE TABLE `diskon` (
   `diskon_id` int(100) NOT NULL,
   `diskon_deskripsi` varchar(255) NOT NULL,
   `diskon_persentase` int(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `diskon`
@@ -72,7 +72,7 @@ INSERT INTO `diskon` (`diskon_id`, `diskon_deskripsi`, `diskon_persentase`) VALU
 CREATE TABLE `kelas` (
   `id_kelas` int(11) NOT NULL,
   `nama` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `kelas`
@@ -93,7 +93,7 @@ CREATE TABLE `petugas` (
   `id_petugas` int(11) NOT NULL,
   `nama` varchar(255) DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `petugas`
@@ -118,7 +118,7 @@ CREATE TABLE `santri` (
   `id_kelas` int(11) DEFAULT NULL,
   `nama_wali` varchar(255) DEFAULT NULL,
   `nohp_wali` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `santri`
@@ -287,7 +287,7 @@ CREATE TABLE `sekolah` (
   `facebook` varchar(255) DEFAULT NULL,
   `instagram` varchar(255) DEFAULT NULL,
   `twitter` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `sekolah`
@@ -305,32 +305,12 @@ INSERT INTO `sekolah` (`id_sekolah`, `nama`, `alamat`, `no_hp`, `akte_notaris`, 
 CREATE TABLE `transaksi` (
   `id_transaksi` int(20) NOT NULL,
   `id_order` varchar(30) NOT NULL,
-  `status_transaksi` varchar(5) NOT NULL,
   `id_diskon` int(10) DEFAULT NULL,
   `id_santri` int(11) NOT NULL,
-  `id_transaksi_detail` int(11) NOT NULL,
   `tanggal_transaksi` timestamp NOT NULL DEFAULT current_timestamp(),
-  `b1` varchar(10) DEFAULT '0',
-  `b2` varchar(10) DEFAULT '0',
-  `b3` varchar(10) DEFAULT '0',
-  `b4` varchar(10) DEFAULT '0',
-  `b5` varchar(10) DEFAULT '0',
-  `b6` varchar(10) DEFAULT '0',
-  `nominal` varchar(255) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `transaksi`
---
-
-INSERT INTO `transaksi` (`id_transaksi`, `id_order`, `status_transaksi`, `id_diskon`, `id_santri`, `id_transaksi_detail`, `tanggal_transaksi`, `b1`, `b2`, `b3`, `b4`, `b5`, `b6`, `nominal`) VALUES
-(199, '4E612JXZ3R', '1', 2, 147, 9, '2023-09-05 06:52:22', '243000', '243000', '243000', '243000', '110000', '', '1458000'),
-(200, 'EZN1KXYQ67', '1', 1, 10, 9, '2023-09-04 12:05:19', '100000', '', '', '', '', '', '1620000'),
-(201, 'JHA8UIGOKN', '1', 1, 10, 9, '2023-09-04 12:07:35', '100000', '', '', '', '', '', '1620000'),
-(202, '9X1GF6WT3E', '1', 1, 147, 11, '2023-09-05 06:41:50', '120000', '', '', '', '', '', '2550000'),
-(203, 'KV5PNBEYGD', '1', 1, 147, 9, '2023-09-05 06:42:12', '135000', '', '', '', '', '', '1620000'),
-(204, 'NX8UEKPF0Z', '1', 1, 147, 11, '2023-09-05 06:43:01', '145000', '', '', '', '', '', '2550000'),
-(206, 'P4LN2MT5WH', '1', 1, 136, 9, '2023-09-07 07:03:07', '150000', '', '', '', '', '', '1620000');
+  `tagihan` int(10) DEFAULT 0,
+  `terbayar` int(10) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -344,16 +324,7 @@ CREATE TABLE `transaksi_detail` (
   `semester` int(1) DEFAULT NULL,
   `tahun_pelajaran` varchar(255) DEFAULT '0',
   `file_rincian_tagihan` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data untuk tabel `transaksi_detail`
---
-
-INSERT INTO `transaksi_detail` (`id_transaksi_detail`, `tagihan`, `semester`, `tahun_pelajaran`, `file_rincian_tagihan`) VALUES
-(9, 1620000, 1, '2023/2024', 'RincianTagihanTapel20232024Sems1.pdf'),
-(11, 2550000, 2, '2024/2025', NULL),
-(12, 2000000, 1, '2025/2026', 'RincianTagihanTapel20252026Sems1.pdf');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
@@ -402,7 +373,6 @@ ALTER TABLE `sekolah`
 ALTER TABLE `transaksi`
   ADD PRIMARY KEY (`id_transaksi`),
   ADD KEY `id_siswa` (`id_santri`),
-  ADD KEY `transaksi_ibfk_2` (`id_transaksi_detail`),
   ADD KEY `transaksi_ibfk_3` (`id_diskon`);
 
 --
@@ -461,7 +431,7 @@ ALTER TABLE `transaksi`
 -- AUTO_INCREMENT untuk tabel `transaksi_detail`
 --
 ALTER TABLE `transaksi_detail`
-  MODIFY `id_transaksi_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_transaksi_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -478,7 +448,6 @@ ALTER TABLE `santri`
 --
 ALTER TABLE `transaksi`
   ADD CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_santri`) REFERENCES `santri` (`id_santri`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`id_transaksi_detail`) REFERENCES `transaksi_detail` (`id_transaksi_detail`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `transaksi_ibfk_3` FOREIGN KEY (`id_diskon`) REFERENCES `diskon` (`diskon_id`) ON DELETE SET NULL ON UPDATE SET NULL;
 COMMIT;
 
