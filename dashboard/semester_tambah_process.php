@@ -32,22 +32,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $datasantri = "SELECT * FROM santri";
             $rdatasantri = mysqli_query($connection, $datasantri);
-            while ($rds = mysqli_num_rows($result)) {
-                $ids = $rds['id_santri'];
 
-                $id_order = $tapelc . $semester . 'S' . $ids . 'C1';
+            if (mysqli_num_rows($rdatasantri) > 0) {
+                while ($rds = mysqli_fetch_assoc($rdatasantri)) {
 
-                $query2 = "INSERT INTO transaksi (id_order, tahun_pelajaran, tagihan, file_rincian_tagihan) VALUES ('$id_order', '$tapel', '$tagihan', '$filename')";
+                    $nisn = $rds['nisn'];
+
+                    $id_order = $tapelc . $semester . 'S' . $nisn;
+
+                    $query2 = "INSERT INTO transaksi (id_order, id_diskon, nisn_santri, tagihan, terbayar) VALUES ('$id_order', 1, '$nisn', '$tagihan', 0)";
+                    mysqli_query($connection, $query2);
+                }
             }
 
 
 
+
             if (mysqli_query($connection, $query)) {
-                if (mysqli_query($connection, $query2)) {
-                    // Data successfully inserted
-                    header("Location: semester.php");
-                    exit();
-                }
+                // Data successfully inserted
+                header("Location: semester.php");
+                exit();
             } else {
                 // Error inserting data
                 echo "Error: " . mysqli_error($connection);

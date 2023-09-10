@@ -76,7 +76,7 @@ if (isset($_POST['delete_transaksi'])) {
 
                                                 <td>
                                                     <a href="frtpdf/frtTapel<?php $tapel = $row['tahun_pelajaran'];
-                                                                            $tapelc = str_replace('/', '', $tapel);
+                                                                            $tapelc = str_replace(['/', '20'], '', $tapel);
                                                                             echo $tapelc;  ?>Sems<?php echo $row['semester']; ?>.pdf" class="btn btn-primary shadow sharp me-1">
                                                         <i class="fa fa-download"></i>
                                                 </td>

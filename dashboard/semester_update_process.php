@@ -32,12 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $datasantri = "SELECT * FROM santri";
             $rdatasantri = mysqli_query($connection, $datasantri);
-            while ($rds = mysqli_fetch_assoc($result)) {
-                $ids = $rds['nisn'];
+            while ($rds = mysqli_fetch_assoc($rdatasantri)) {
+                $nisn = $rds['nisn'];
 
-                $id_order = $tapelc . $semester . 'S' . $ids . 'C01';
+                $id_order = $tapelc . $semester . 'S' . $nisn . 'C01';
 
-                $query2 = "INSERT INTO transaksi (id_order, id_diskon, id_santri, tagihan, terbayar) VALUES ('$id_order', 1, '$ids', '$tagihan', 0)";
+                $query2 = "INSERT INTO transaksi (id_order, id_diskon, nisn_santri, tagihan, terbayar) VALUES ('$id_order', 1, '$nisn', '$tagihan', 0)";
             }
 
 
