@@ -1,18 +1,17 @@
-﻿<?php
-include '../connection.php';
+﻿
+<?php include '../connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
-    $id = $_POST["id"]; // Add this line to get the ID
     $semester = $_POST["semester"];
     $tapel = $_POST["tapel"];
     $tagihan = $_POST["tagihan"];
 
     // Replace slashes in $tapel with empty strings to get "20232024"
-    $tapel = str_replace('/', '', $tapel);
+    $tapelc = str_replace(['/', '20'], '', $tapel);
 
     // Custom filename
-    $filename = "frtTapel" . $tapel . "Sems" . $semester . ".pdf";
+    $filename = "frtTapel" . $tapelc . "Sems" . $semester . ".pdf";
 
     // File upload handling
     $pdfFile = $_FILES["pdfFile"];
@@ -27,15 +26,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Move the uploaded PDF to the specified directory
         if (move_uploaded_file($pdfFile["tmp_name"], $filePath)) {
-            // Update form data in the database
-            $query = "UPDATE transaksi_detail SET semester='$semester', tahun_pelajaran='$tapel', tagihan='$tagihan', file_rincian_tagihan='$filename' WHERE id_transaksi_detail=$id";
+            // Insert form data into the database
+            $query = "INSERT INTO transaksi_detail (semester, tahun_pelajaran, tagihan, file_rincian_tagihan) VALUES ('$semester', '$tapel', '$tagihan', '$filename')";
+
+
+            $datasantri = "SELECT * FROM santri";
+            $rdatasantri = mysqli_query($connection, $datasantri);
+            while ($rds = mysqli_fetch_assoc($result)) {
+                $ids = $rds['id_santri'];
+
+                $id_order = $tapelc . $semester . 'S' . $ids . 'C1';
+
+                $query2 = "INSERT INTO transaksi (id_order, id_diskon, id_santri, tagihan, terbayar) VALUES ('$id_order', 1, '$ids', '$tagihan', 0)";
+            }
+
+
 
             if (mysqli_query($connection, $query)) {
-                // Data successfully updated
-                header("Location: semester.php");
-                exit();
+                if (mysqli_query($connection, $query2)) {
+                    // Data successfully inserted
+                    header("Location: semester.php");
+                    exit();
+                }
             } else {
-                // Error updating data
+                // Error inserting data
                 echo "Error: " . mysqli_error($connection);
             }
         } else {
@@ -51,6 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_close($connection);
 } else {
     // Redirect to the form page if accessed without POST request
-    header("Location: semester.php");
+    header("Location: tambah_semester.php");
     exit();
 }
