@@ -104,52 +104,24 @@ $countStatusNot3 = $row[0];
                                         Tagihan yang harus dibayar tiap bulan: <strong><span id="tagihan-tiap-bulan"></span></strong>
                                     </div>
                                 </div>
-                            </div>
 
-
-
-
-
-                            <div class="row">
                                 <div class="col">
-                                    <label for="nominal" class="form-label">Bulan ke : 1</label>
+                                    <label for="nominal" class="form-label">Nominal Pembayaran</label>
                                     <input type="number" min="100000" class="form-control" name="b1" placeholder="Masukkan nominal, minimal Rp. 100.000">
                                 </div>
-
-                                <div class="col">
-                                    <label for="nominal" class="form-label">Bulan ke : 2</label>
-                                    <input type="number" min="100000" class="form-control" name="b2" placeholder="Masukkan nominal, minimal Rp. 100.000">
-                                </div>
-
-                                <div class="col">
-                                    <label for="nominal" class="form-label">Bulan ke : 3</label>
-                                    <input type="number" min="100000" class="form-control" name="b3" placeholder="Masukkan nominal, minimal Rp. 100.000">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col">
-                                    <label for="nominal" class="form-label">Bulan ke : 4</label>
-                                    <input type="number" min="100000" class="form-control" name="b4" placeholder="Masukkan nominal, minimal Rp. 100.000">
-                                </div>
-
-                                <div class="col">
-                                    <label for="nominal" class="form-label">Bulan ke : 5</label>
-                                    <input type="number" min="100000" class="form-control" name="b5" placeholder="Masukkan nominal, minimal Rp. 100.000">
-                                </div>
-
-                                <div class="col">
-                                    <label for="nominal" class="form-label">Bulan ke : 6</label>
-                                    <input type="number" min="100000" class="form-control" name="b6" placeholder="Masukkan nominal, minimal Rp. 100.000">
-                                </div>
                             </div>
 
 
 
 
 
+
+
+
+
+
                             <div class="row">
-                                <div class="col-md-12 d-flex justify-content-end">
+                                <div class="col-md-12 d-flex justify-content-end" style="margin-top: 20px;">
                                     <button type="submit" class="btn btn-primary">✓ Tambah Transaksi Manual</button>
                                 </div>
                             </div>
@@ -161,7 +133,11 @@ $countStatusNot3 = $row[0];
             </div>
         </div>
     </div>
-
+    <script>
+        $(document).ready(function() {
+            $('.selectpicker').selectpicker();
+        });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
     <script>
         // PDF.js configuration
@@ -193,9 +169,6 @@ $countStatusNot3 = $row[0];
             });
         });
     </script>
-
-    <!-- Add this script before the closing </body> tag -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         $(document).ready(function() {
