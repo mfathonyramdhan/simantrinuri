@@ -13,7 +13,6 @@ if (isset($_GET['id'])) {
     JOIN diskon d ON d.diskon_id = t.id_diskon WHERE id_order = '$id'";
 
 
-
     $result = mysqli_query($connection, $query);
 }
 
@@ -37,7 +36,8 @@ if (mysqli_num_rows($result) > 0) {
     // Convert the first two characters to the academic year format
     $tapelc = $first_two . '/' . $third_fourth;
 
-    $tagihan = $row['tagihan'] - ($row['tagihan'] * ($row['dp'] / 100))
+    $tagihan = $row['tagihan'] - ($row['tagihan'] * ($row['dp'] / 100));
+    $total = $row['terbayar'];
 ?>
 
     <div class="content-body">
@@ -49,7 +49,7 @@ if (mysqli_num_rows($result) > 0) {
                 <div class="card-body">
                     <form method="POST" action="transaksi_update_process.php" enctype="multipart/form-data">
                         <div class="row">
-                            <input type="hidden" class="form-control" id="id_transaksi" name="id_transaksi" value="<?php echo $row['id_transaksi']; ?>">
+                            <input type="hidden" class="form-control" id="id_order" name="id_order" value="<?php echo $row['id_order']; ?>">
                             <div class="col">
                                 <div class="mb-3">
                                     <label for="nama_santri" class="form-label">Nama Santri</label>
@@ -58,8 +58,8 @@ if (mysqli_num_rows($result) > 0) {
                             </div>
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="id_order" class="form-label">ID Transaksi</label>
-                                    <input type="text" class="form-control" id="id_order" name="id_order" value="<?php echo $row['id_order']; ?>" disabled>
+                                    <label for="id_order2" class="form-label">ID Transaksi</label>
+                                    <input type="text" class="form-control" id="id_order2" name="id_order2" value="<?php echo $row['id_order']; ?>" disabled>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +85,7 @@ if (mysqli_num_rows($result) > 0) {
                                 </div>
                             </div>
 
-                            <div class="col">
+                            <!-- <div class="col">
                                 <div class="alert alert-primary" role="alert">
                                     Terakhir bayar : <strong><span>
                                             <?php
@@ -98,7 +98,7 @@ if (mysqli_num_rows($result) > 0) {
                                             } ?>
                                         </span></strong>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="row">
@@ -158,7 +158,7 @@ if (mysqli_num_rows($result) > 0) {
                                         </span></strong>
                                 </div>
                             </div>
-                            <div class="col">
+                            <!-- <div class="col">
                                 <div class="alert alert-danger" role="alert">
                                     Sisa Tagihan bulan ini : <strong><span>
                                             <?php echo 'Rp. ' . number_format(($tagihan / 6),
@@ -168,13 +168,13 @@ if (mysqli_num_rows($result) > 0) {
                                             ); ?>
                                         </span></strong>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="row">
                             <div class="col">
-                                <label for="terbayar" class="form-label">Nominal Cicilan</label>
-                                <input type="number" min="100000" class="form-control" name="terbayar" placeholder="Masukkan nominal, minimal Rp. 100.000">
+                                <label for="bayar" class="form-label">Nominal Cicilan</label>
+                                <input type="number" min="100000" class="form-control" name="bayar" placeholder="Masukkan nominal, minimal Rp. 100.000">
                             </div>
                         </div>
 
@@ -184,20 +184,87 @@ if (mysqli_num_rows($result) > 0) {
 
                 </div>
                 <button type="submit" class="btn btn-primary" style="margin-right: 20px; margin-left: 20px; margin-bottom: 20px;">Tambah Cicilan</button>
+                <div class="row" style="margin-right: 20px; margin-left: 20px; margin-bottom: 20px;">
+                    <div class="col">
+                        <h4 style="margin-left: 20px;">> Riwayat Cicilan Pembayaran <strong><span>
+                                    <?php echo 'Tahun Pelajaran ' . $tapelc . ' Semester ' . $semester; ?>
+                                </span></strong></h4>
 
+
+
+
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Tanggal Transaksi</th>
+                                    <th scope="col">Jumlah Bayar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+
+
+                                $historiQuery = "SELECT t.* FROM transaksi_histori t WHERE id_order = '$id' ORDER BY tanggal DESC";
+                                $historiQueryr = mysqli_query($connection, $historiQuery);
+                                if (mysqli_num_rows($historiQueryr) > 0) {
+                                    $counter = 1;
+
+
+                                    while ($hq = mysqli_fetch_assoc($historiQueryr)) {
+                                ?>
+                                        <tr>
+                                            <th scope="row"><?php echo $counter++; ?></th>
+                                            <td><?php echo date('d F Y / H:i', strtotime($hq['tanggal'])); ?></td>
+                                            <td><?php
+                                                echo 'Rp. ' . number_format(($hq['terbayar']),
+                                                    0,
+                                                    ',',
+                                                    '.'
+                                                );
+                                                ?></td>
+                                        </tr>
+                                <?php
+                                    }
+                                }
+                                ?>
+                                <tr>
+                                    <th scope="row"></th>
+                                    <td class="table-success"><strong> Total :</strong> </td>
+                                    <td class="table-success"><strong> <?php echo 'Rp. ' . number_format(
+                                                                            $total,
+                                                                            0,
+                                                                            ',',
+                                                                            '.'
+                                                                        ); ?></strong> </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Tanggal Transaksi</th>
+                                    <th scope="col">Jumlah Bayar</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
                 <div class="row">
                     <div class="col">
-                        <h3 style="margin-left: 20px;">--- Rincian Tagihan <strong><span>
+                        <h3 style="margin-left: 20px;">> Rincian Tagihan <strong><span>
                                     <?php echo 'Tahun Pelajaran ' . $tapelc . ' Semester ' . $semester; ?>
                                 </span></strong></h3>
+
+                        <div id="pdf-viewer">
+                            <!-- PDF.js viewer container -->
+                        </div>
                     </div>
 
                 </div>
 
 
-                <div id="pdf-viewer">
-                    <!-- PDF.js viewer container -->
-                </div>
+
 
 
                 </form>

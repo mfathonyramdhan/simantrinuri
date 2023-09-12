@@ -3,20 +3,27 @@
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
-    $id = $_POST["id_transaksi"];
+    $id = $_POST["id_order"];
 
-    $terbayar = $_POST["terbayar"];
+    $bayar = $_POST["bayar"];
 
-    $tampil = "SELECT terbayar FROM transaksi WHERE id_transaksi = $id";
-    $terbayarkan = $tampil + $terbayar;
+    $totalHistoryBayar = "SELECT terbayar FROM transaksi WHERE id_order ='$id'";
+    $totalHistoryBayarr = mysqli_query($connection, $totalHistoryBayar);
+    $thb = mysqli_fetch_assoc($totalHistoryBayarr);
+    $thbr = $thb["terbayar"];
 
-    $query = "UPDATE transaksi SET terbayar='$terbayarkan' WHERE id_transaksi='$id'";
 
+    $totalBayarSkrg = $thbr + $bayar;
+
+
+    $query = "UPDATE transaksi SET terbayar='$totalBayarSkrg' WHERE id_order='$id'";
 
     if (mysqli_query($connection, $query)) {
 
+        $addHistory = "INSERT INTO transaksi_histori (id_order, terbayar) VALUES ('$id', '$bayar')";
+        mysqli_query($connection, $addHistory);
         // Data successfully inserted
-        header("Location: transaksi.php");
+        header("Location: transaksi_update.php?id=$id");
         exit();
     } else {
         // Error inserting data
